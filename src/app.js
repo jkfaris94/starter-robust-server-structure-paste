@@ -1,6 +1,19 @@
 const express = require("express");
 const app = express();
 
+
+//paste state to return one paste record by id or return an error if the id doesn't exist.
+app.use("/pastes/:pasteId", (req, res, next) =>{
+  const { pasteId } = req.params;
+  const foundPaste = pastes.find((paste) => paste.id === Number(pasteId));
+
+  if (foundPaste) {
+    res.json({ data: foundPaste });
+  } else {
+    next(`Paste id not found: ${pasteId}`);
+  }
+});
+
 // TODO: Follow instructions in the checkpoint to implement ths API.
 const pastes = require("./data/pastes-data");
 
