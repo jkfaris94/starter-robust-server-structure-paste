@@ -1,6 +1,9 @@
-const router = require("express").Router();
-const controller = require("./pastes.controller");
+const pastes = require("../data/pastes-data"); 
 
-router.route("/").get(controller.list);
-
-module.exports = router;
+function list(req, res) {
+    res.json({ data: pastes }); // placeholder response
+  }
+  
+  module.exports = {
+    list,
+  };

@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const pastesRouter = require("./pastes/pastes.router");
 
 app.use(express.json())
 
@@ -19,9 +20,7 @@ app.use("/pastes/:pasteId", (req, res, next) =>{
 // TODO: Follow instructions in the checkpoint to implement ths API.
 const pastes = require("./data/pastes-data");
 
-app.get("/pastes", (req, res) => {
-  res.json({ data: pastes });
-});
+app.use("/pastes", pastesRouter); // Note: app.use
 
 // New middleware function to validate the request body
 function bodyHasTextProperty(req, res, next) {
