@@ -76,6 +76,24 @@ function expirationIsValidNumber(req, res, next) {
     next();
 }
 
+function pasteExists(req, res, next) {
+    const { pasteId } = req.params;
+    const foundPaste = pastes.find((paste) => paste.id === Number(pasteId));
+    if (foundPaste) {
+      return next();
+    }
+    next({
+      status: 404,
+      message: `Paste id not found: ${pasteId}`
+    });
+  }
+  
+function read(req, res) {
+    const { pasteId } = req.params;
+    const foundPaste = pastes.find((paste) => paste.id === Number(pasteId));
+    res.json({ data: foundPaste });
+}
+
 
   module.exports = {
     create: [
@@ -91,4 +109,5 @@ function expirationIsValidNumber(req, res, next) {
         create
     ],
     list,
+    read: [pasteExists, read],
   };
