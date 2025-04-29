@@ -32,6 +32,51 @@ function list(req, res) {
     res.status(201).json({ data: newPaste });
   }
   
+//add validation to make sure the properties have reasonable values.
+function exposurePropertyIsValid(req, res, next) {
+    const { data: { exposure } = {} } = req.body;
+    const validExposure = ["private", "public"];
+    if (validExposure.includes(exposure)) {
+        return next();
+      }
+      next({
+        status: 400,
+        message: `Value of the 'exposure' property must be one of ${validExposure}. Received: ${exposure}`
+      });
+}
+
+function syntaxPropertyIsValid(req, res, next) {
+    const { data: { syntax } = {} } = req.body;
+    const validSyntax = [
+        "None",
+        "Javascript",
+        "Python",
+        "Ruby",
+        "Perl",
+        "C",
+        "Scheme" 
+    ];
+    if (validSyntax.includes(syntax)) {
+        return next();
+    }
+    next({
+        status: 400,
+        message: `Value of the 'syntax' property must be one of ${validSyntax}. Received: ${syntax}`
+    })
+}
+
+function expirationIsValidNumber(req, res, next) {
+    const { data: { expiration } = {} } = req.body;
+    if (expiration <= 0 || !Number.isInteger(expiration)) {
+        return next({
+            status: 400,
+            message: `Expiration requires a valid number`
+        });
+    }
+    next();
+}
+
+
   module.exports = {
     create: [
         bodyDataHas("name"),
@@ -40,6 +85,9 @@ function list(req, res) {
         bodyDataHas("expiration"),
         bodyDataHas("text"),
         bodyDataHas("user_id"), 
+        exposurePropertyIsValid,
+        syntaxPropertyIsValid,
+        expirationIsValidNumber,
         create
     ],
     list,
