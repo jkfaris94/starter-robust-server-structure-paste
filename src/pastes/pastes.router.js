@@ -3,6 +3,6 @@ const controller = require("./pastes.controller"); //imports the /pastes control
 
 router.route("/").get(controller.list).post(controller.create); //using route() allows you to write the path once and then link multiple route handlers to that path.
 //get(controller.list) uses the list() route handler defined in the controller for GET requests to /
-router.route("/:pasteId").get(controller.read).put(controller.update);
+router.route("/:pasteId").get(controller.read).put(controller.update).delete(controller.delete);
 
 module.exports = router; //exports the router for use in app.js.
