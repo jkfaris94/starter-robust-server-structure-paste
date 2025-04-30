@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const pastesRouter = require("./pastes/pastes.router");
+const usersRouter = require("./users/users.router");
+
 
 app.use(express.json())
 
@@ -9,6 +11,7 @@ app.use(express.json())
 const pastes = require("./data/pastes-data");
 
 app.use("/pastes", pastesRouter); // Note: app.use
+app.use("/users", usersRouter);
 
 // Not found handler
 app.use((req, res, next) => {
