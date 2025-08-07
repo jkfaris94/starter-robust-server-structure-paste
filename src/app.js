@@ -2,12 +2,13 @@ const express = require("express");
 const app = express();
 
 // TODO: Follow instructions in the checkpoint to implement ths API.
-const pastes = require("./data/pastes-data");
+const usersRouter = require("./users/users.router");
 const pastesRouter = require("./pastes/pastes.router");
+
 
 app.use(express.json())
 
-
+app.use("/users", usersRouter);
 app.use("/pastes", pastesRouter); // Note: app.use
 
 
