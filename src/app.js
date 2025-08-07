@@ -4,7 +4,9 @@ const app = express();
 // TODO: Follow instructions in the checkpoint to implement ths API.
 const pastes = require("./data/pastes-data");
 
+app.use(express.json())
 
+//get single data
 app.use("/pastes/:pasteId", (req, res, next) => {
   const { pasteId } = req.params;
   const foundPaste = pastes.find((paste) => paste.id === Number(pasteId));
@@ -17,8 +19,33 @@ app.use("/pastes/:pasteId", (req, res, next) => {
 });
 
 //get data
-app.use("/pastes", (req, res) => {
+app.get("/pastes", (req, res) => {
   res.json({ data: pastes });
+});
+
+// Variable to hold the next ID
+// Because some IDs may already be used, find the largest assigned ID
+let lastPasteId = pastes.reduce((maxId, paste) => Math.max(maxId, paste.id), 0);
+
+app.post("/pastes", (req, res, next) => {
+  const { data: { name, syntax, exposure, expiration, text, user_id } = {} } =
+    req.body;
+  if (text) {
+    const newPaste = {
+      id: ++lastPasteId, // Increment last ID, then assign as the current ID
+      name,
+      syntax,
+      exposure,
+      expiration,
+      text,
+      user_id
+    };
+    pastes.push(newPaste);
+    res.status(202).json({ data: newPaste });
+  } else {
+    res.sendStatus(400);
+  }
+
 });
 
 // Not found handler
