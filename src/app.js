@@ -7,17 +7,6 @@ const pastesRouter = require("./pastes/pastes.router");
 
 app.use(express.json())
 
-//get single data
-app.use("/pastes/:pasteId", (req, res, next) => {
-  const { pasteId } = req.params;
-  const foundPaste = pastes.find((paste) => paste.id === Number(pasteId));
-
-  if (foundPaste) {
-    res.json({ data: foundPaste });
-  } else {
-    next({ status: 404, message: `Paste id not found: ${pasteId}` });
-  }
-});
 
 app.use("/pastes", pastesRouter); // Note: app.use
 
